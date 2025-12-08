@@ -60,6 +60,11 @@ export const getSettingsMenuData = () => [
     key: 'alerts',
     link: `/loyalty/ui/settings/alerts`,
   },
+  {
+    title: <FormattedMessage {...messages.categories} />,
+    key: 'categories',
+    link: `/categories`,
+  },
 ];
 
 export const getTopbarMenuDataValue = () => [

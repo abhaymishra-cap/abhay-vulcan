@@ -77,4 +77,8 @@ export default defineMessages({
     id: `${scope}.confirm`,
     defaultMessage: 'Confirm',
   },
+  categories: {
+    id: `${scope}.categories`,
+    defaultMessage: 'Categories',
+  },
 });

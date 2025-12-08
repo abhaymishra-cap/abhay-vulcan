@@ -3,6 +3,7 @@ const Dashboard = lazy(() => import('../Dashboard/Loadable'));
 const Home = lazy(() => import('../Home/Loadable'));
 const About = lazy(() => import('../About/Loadable'));
 const Contact = lazy(() => import('../Contact/Loadable'));
+const Categories = lazy(() => import('../Categories/Loadable'));
 
 const routes = [
   // remove these dummy routes and add your own routes
@@ -26,6 +27,11 @@ const routes = [
     exact: true,
     path: `/accessForbidden`,
     component: lazy(() => import('@capillarytech/vulcan-react-sdk/components/AccessForbidden')),
+  },
+  {
+    exact: true,
+    path: `/categories`,
+    component: Categories,
   },
   // this will be your default / home / landing page route
   {
