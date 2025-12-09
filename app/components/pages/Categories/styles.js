@@ -29,7 +29,8 @@ export default css`
 
   .action-buttons {
     display: flex;
-    gap: 12px;
+    gap: 0px;
+    align-items: center;
   }
 
   .category-badge {

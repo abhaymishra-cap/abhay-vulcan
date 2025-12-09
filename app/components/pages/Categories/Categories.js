@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { compose, bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
@@ -47,12 +47,69 @@ function Categories(props) {
   // prepare the final context using SDK and use it in your app
   const finalContext = getHostApplicationContext(appContext);
 
+  // Local state for search input (for immediate UI update)
+  const [localSearchValue, setLocalSearchValue] = useState(searchFilter || '');
+  const debounceTimerRef = useRef(null);
+  const isInitialMount = useRef(true);
+
+  // Initial load - fetch all categories (only on mount)
   useEffect(() => {
-    actions.fetchCategories();
+    actions.fetchCategories({ limit: 10, offset: 0 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Debounced search effect - triggers API call when search value changes
+  useEffect(() => {
+    // Skip on initial mount
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    // Clear previous timer
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    // Set new timer for debounced API call
+    debounceTimerRef.current = setTimeout(() => {
+      // Update Redux search filter state
+      actions.setSearchFilter(localSearchValue);
+      
+      // Trigger API call with search query
+      const searchParams = {
+        limit: 10,
+        offset: 0,
+      };
+      
+      // Only add q parameter if there's a search value
+      if (localSearchValue && localSearchValue.trim()) {
+        searchParams.q = localSearchValue.trim();
+      }
+      
+      actions.fetchCategories(searchParams);
+    }, 400); // 400ms debounce delay
+
+    // Cleanup function
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localSearchValue]);
+
+  // Sync local search value with Redux state when it changes externally
+  useEffect(() => {
+    if (searchFilter !== localSearchValue) {
+      setLocalSearchValue(searchFilter || '');
+    }
+  }, [searchFilter]);
+
   const handleSearchChange = e => {
-    actions.setSearchFilter(e.target.value);
+    const value = e.target.value;
+    setLocalSearchValue(value); // Update local state immediately for responsive UI
+    // API call will be triggered by the debounced useEffect above
   };
 
   const handleAddCategory = () => {
@@ -152,9 +209,10 @@ function Categories(props) {
             <div className="search-container">
               <CapInput.Search
                 placeholder={formatMessage(messages.searchPlaceholder)}
-                value={searchFilter}
+                value={localSearchValue}
                 onChange={handleSearchChange}
                 size="large"
+                allowClear
               />
             </div>
             <div className="action-buttons">

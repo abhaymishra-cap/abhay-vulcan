@@ -25,6 +25,12 @@ const makeSelectFilteredCategories = () =>
 
 const makeSelectCategoriesCount = () =>
   createSelector(selectCategoriesDomain, (substate = fromJS({})) => {
+    // Use pagination.total if available, otherwise fall back to filteredCategories size
+    const pagination = substate.get('pagination', fromJS({}));
+    const total = pagination.get('total');
+    if (total !== undefined && total !== null) {
+      return total;
+    }
     const categories = substate.get('filteredCategories', fromJS([]));
     return categories.size;
   });

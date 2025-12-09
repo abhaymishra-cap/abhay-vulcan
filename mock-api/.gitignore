@@ -1,0 +1,4 @@
+# Ignore db.json changes (it will be modified during development)
+db.json
+
+

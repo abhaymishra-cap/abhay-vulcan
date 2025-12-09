@@ -242,6 +242,7 @@ module.exports = options => ({
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+        REACT_APP_USE_MOCK_API: JSON.stringify(process.env.REACT_APP_USE_MOCK_API),
       },
       CURRENT_APP_NAME: JSON.stringify(CURRENT_APP_NAME),
       CURRENT_APP_NAME_HASH: JSON.stringify(CURRENT_APP_NAME_HASH),

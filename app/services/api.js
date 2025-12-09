@@ -91,4 +91,116 @@ export const getUserData = async () => {
 export const getCustomerData = (customerId) => {
   const url = `${endpoints.vulcan_endpoint}/intouch/v2/customers/${customerId}`;
   return httpRequest(url, getAryaAPICallObject('GET'));
-}
+};
+
+// Product Categories v2 API endpoints
+// Check if we should use mock API (development mode)
+const USE_MOCK_API = process.env.REACT_APP_USE_MOCK_API === 'true';
+const MOCK_API_BASE = 'http://localhost:3001/api/v1';
+
+/**
+ * Get all product categories (v2 API)
+ * @param {object} params - Query parameters { q, limit, offset, root, entityCodes, entityIds, sortBy, sortOrder }
+ * @returns {Promise} API response with structure { data: [...], pagination: {...} }
+ */
+export const getCategories = (params = {}) => {
+  const queryParams = new URLSearchParams();
+  
+  // Search parameter (q) - case-insensitive search by code/name
+  if (params.q) {
+    queryParams.append('q', params.q);
+  }
+  
+  // Pagination
+  if (params.limit !== undefined) {
+    queryParams.append('limit', params.limit);
+  }
+  if (params.offset !== undefined) {
+    queryParams.append('offset', params.offset);
+  }
+  
+  // Filters
+  if (params.root !== undefined) {
+    queryParams.append('root', params.root);
+  }
+  if (params.entityCodes) {
+    queryParams.append('entityCodes', params.entityCodes);
+  }
+  if (params.entityIds) {
+    queryParams.append('entityIds', params.entityIds);
+  }
+  
+  // Sorting
+  if (params.sortBy) {
+    queryParams.append('sortBy', params.sortBy);
+  }
+  if (params.sortOrder) {
+    queryParams.append('sortOrder', params.sortOrder);
+  }
+  
+  const queryString = queryParams.toString();
+  const baseUrl = USE_MOCK_API ? MOCK_API_BASE : endpoints.product_categories_api_endpoint;
+  const url = `${baseUrl}/categories${queryString ? `?${queryString}` : ''}`;
+  return httpRequest(url, getAryaAPICallObject('GET'));
+};
+
+/**
+ * Get single category by ID (v2 API)
+ * @param {string|number} categoryId
+ * @param {object} params - Optional parameters { includeChildren, childrenLimit, childrenOffset }
+ * @returns {Promise}
+ */
+export const getCategoryById = (categoryId, params = {}) => {
+  const queryParams = new URLSearchParams();
+  if (params.includeChildren !== undefined) {
+    queryParams.append('includeChildren', params.includeChildren);
+  }
+  if (params.childrenLimit !== undefined) {
+    queryParams.append('childrenLimit', params.childrenLimit);
+  }
+  if (params.childrenOffset !== undefined) {
+    queryParams.append('childrenOffset', params.childrenOffset);
+  }
+  
+  const queryString = queryParams.toString();
+  const baseUrl = USE_MOCK_API ? MOCK_API_BASE : endpoints.product_categories_api_endpoint;
+  const url = `${baseUrl}/categories/${categoryId}${queryString ? `?${queryString}` : ''}`;
+  return httpRequest(url, getAryaAPICallObject('GET'));
+};
+
+/**
+ * Create new category (v2 API)
+ * Note: v2 API may have different structure - update when API contract is available
+ * @param {object} categoryData - { code, name, parentId, description }
+ * @returns {Promise}
+ */
+export const createCategory = (categoryData) => {
+  const baseUrl = USE_MOCK_API ? MOCK_API_BASE : endpoints.product_categories_api_endpoint;
+  const url = `${baseUrl}/categories`;
+  return httpRequest(url, getAryaAPICallObject('POST', categoryData));
+};
+
+/**
+ * Update category (v2 API)
+ * Note: v2 API may have different structure - update when API contract is available
+ * @param {string|number} categoryId
+ * @param {object} categoryData
+ * @returns {Promise}
+ */
+export const updateCategory = (categoryId, categoryData) => {
+  const baseUrl = USE_MOCK_API ? MOCK_API_BASE : endpoints.product_categories_api_endpoint;
+  const url = `${baseUrl}/categories/${categoryId}`;
+  return httpRequest(url, getAryaAPICallObject('PUT', categoryData));
+};
+
+/**
+ * Delete category (v2 API)
+ * Note: v2 API may have different structure - update when API contract is available
+ * @param {string|number} categoryId
+ * @returns {Promise}
+ */
+export const deleteCategory = (categoryId) => {
+  const baseUrl = USE_MOCK_API ? MOCK_API_BASE : endpoints.product_categories_api_endpoint;
+  const url = `${baseUrl}/categories/${categoryId}`;
+  return httpRequest(url, getAryaAPICallObject('DELETE'));
+};
