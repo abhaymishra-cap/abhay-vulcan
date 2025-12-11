@@ -2,22 +2,32 @@ import { css } from 'styled-components';
 import * as styledVars from '@capillarytech/cap-ui-library/styled/variables';
 
 export default css`
-  .categories-page {
+  .brands-page {
     padding: 24px;
     min-height: 100vh;
     background-color: ${styledVars.CAP_WHITE || '#ffffff'};
   }
 
-  .categories-header {
+  .brands-header {
     margin-bottom: 24px;
   }
 
-  .categories-summary {
+  .brands-summary {
     margin-bottom: 16px;
     color: ${styledVars.CAP_G04 || '#666'};
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
-  .categories-actions {
+  .brands-summary-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #10b981; /* variable is absent - using green */
+  }
+
+  .brands-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -35,26 +45,26 @@ export default css`
     align-items: center;
   }
 
-  .category-badge {
+  .brand-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background-color: #7c3aed;
+    background-color: #f97316; /* variable is absent - using light orange/peach */
     color: white;
     font-weight: 600;
     font-size: 12px;
     margin-right: 12px;
   }
 
-  .category-name-container {
+  .brand-name-container {
     display: flex;
     align-items: center;
   }
 
-  .category-id {
+  .brand-id {
     color: ${styledVars.CAP_G04 || '#666'};
     font-size: 12px;
     margin-left: 8px;
@@ -70,7 +80,6 @@ export default css`
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: #10b981;
+    background-color: #10b981; /* variable is absent - using green */
   }
 `;
-

@@ -13,8 +13,8 @@ import saga from './saga';
 import reducer from './reducer';
 import styles from './styles';
 import {
-  makeSelectFilteredCategories,
-  makeSelectCategoriesCount,
+  makeSelectFilteredBrands,
+  makeSelectBrandsCount,
   makeSelectSearchFilter,
   makeSelectLoading,
 } from './selectors';
@@ -31,20 +31,20 @@ import {
   CapIcon,
 } from '@capillarytech/cap-ui-library';
 
-function Categories(props) {
+function Brands(props) {
   const {
     className,
     actions,
     history,
     appContext,
     intl: { formatMessage },
-    filteredCategories,
-    categoriesCount,
+    filteredBrands,
+    brandsCount,
     searchFilter,
     loading,
   } = props;
 
-  const currentRoute = history?.location?.pathname || '/categories';
+  const currentRoute = history?.location?.pathname || '/brands';
 
   // appContext is the prop that needs to be passed from the host application where this component is embedded
   // prepare the final context using SDK and use it in your app
@@ -55,9 +55,9 @@ function Categories(props) {
   const debounceTimerRef = useRef(null);
   const isInitialMount = useRef(true);
 
-  // Initial load - fetch all categories (only on mount)
+  // Initial load - fetch all brands (only on mount)
   useEffect(() => {
-    actions.fetchCategories({ limit: 10, offset: 0 });
+    actions.fetchBrands({ limit: 10, offset: 0 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -75,9 +75,10 @@ function Categories(props) {
     }
 
     // Set new timer for debounced API call
+    const currentSearchValue = localSearchValue;
     debounceTimerRef.current = setTimeout(() => {
       // Update Redux search filter state
-      actions.setSearchFilter(localSearchValue);
+      actions.setSearchFilter(currentSearchValue);
       
       // Trigger API call with search query
       const searchParams = {
@@ -86,11 +87,12 @@ function Categories(props) {
       };
       
       // Only add q parameter if there's a search value
-      if (localSearchValue && localSearchValue.trim()) {
-        searchParams.q = localSearchValue.trim();
+      if (currentSearchValue && currentSearchValue.trim()) {
+        searchParams.q = currentSearchValue.trim();
       }
       
-      actions.fetchCategories(searchParams);
+      // Always trigger API call, even if search is empty (to show all brands)
+      actions.fetchBrands(searchParams);
     }, 400); // 400ms debounce delay
 
     // Cleanup function
@@ -115,9 +117,9 @@ function Categories(props) {
     // API call will be triggered by the debounced useEffect above
   };
 
-  const handleAddCategory = () => {
-    // TODO: Implement add category functionality
-    console.log('Add new category clicked');
+  const handleAddBrand = () => {
+    // TODO: Implement add brand functionality
+    console.log('Add new brand clicked');
   };
 
   const handleMoreActions = () => {
@@ -143,26 +145,26 @@ function Categories(props) {
       render: () => <input type="checkbox" />,
     },
     {
-      title: formatMessage(messages.categoryName),
+      title: formatMessage(messages.brandName),
       dataIndex: 'name',
       key: 'name',
       render: (text, record) => (
-        <div className="category-name-container">
-          <div className="category-badge">{record.initials || getInitials(text)}</div>
+        <div className="brand-name-container">
+          <div className="brand-badge">{record.initials || getInitials(text)}</div>
           <div>
             <div>{text}</div>
-            <span className="category-id">{record.id}</span>
+            <span className="brand-id">{record.code || record.id}</span>
           </div>
         </div>
       ),
     },
     {
-      title: formatMessage(messages.parentCategory),
-      dataIndex: 'parentCategory',
-      key: 'parentCategory',
-      render: parentCategory =>
-        parentCategory ? (
-          <CapTag>{parentCategory}</CapTag>
+      title: formatMessage(messages.parentBrand),
+      dataIndex: 'parentBrand',
+      key: 'parentBrand',
+      render: parentBrand =>
+        parentBrand ? (
+          <CapTag>{parentBrand}</CapTag>
         ) : (
           <span>{formatMessage(messages.noParent)}</span>
         ),
@@ -203,17 +205,18 @@ function Categories(props) {
             <InventorySidebar history={history} activeRoute={currentRoute} />
           </CapColumn>
           <CapColumn span={20}>
-            <div className="categories-page">
-              <div className="categories-header">
+            <div className="brands-page">
+              <div className="brands-header">
                 <CapHeading type="h1" level={1}>
                   {formatMessage(messages.header)}
                 </CapHeading>
-                <div className="categories-summary">
-                  {formatMessage(messages.totalCategories)}: {categoriesCount}
+                <div className="brands-summary">
+                  <span className="brands-summary-dot" />
+                  {formatMessage(messages.totalBrands)}: {brandsCount}
                 </div>
               </div>
 
-              <div className="categories-actions">
+              <div className="brands-actions">
                 <div className="search-container">
                   <CapInput.Search
                     placeholder={formatMessage(messages.searchPlaceholder)}
@@ -227,9 +230,9 @@ function Categories(props) {
                   <CapButton
                     type="primary"
                     isAddBtn
-                    onClick={handleAddCategory}
+                    onClick={handleAddBrand}
                   >
-                    {formatMessage(messages.addNewCategory)}
+                    {formatMessage(messages.addNewBrand)}
                   </CapButton>
                   <CapButton
                     type="secondary"
@@ -242,7 +245,7 @@ function Categories(props) {
               <CapSpin spinning={loading}>
                 <CapTable
                   columns={columns}
-                  dataSource={filteredCategories}
+                  dataSource={filteredBrands}
                   rowKey="id"
                   pagination={false}
                 />
@@ -255,21 +258,21 @@ function Categories(props) {
   );
 }
 
-Categories.propTypes = {
+Brands.propTypes = {
   history: PropTypes.object,
   appContext: PropTypes.object,
   actions: PropTypes.object,
   className: PropTypes.string,
   intl: intlShape.isRequired,
-  filteredCategories: PropTypes.array,
-  categoriesCount: PropTypes.number,
+  filteredBrands: PropTypes.array,
+  brandsCount: PropTypes.number,
   searchFilter: PropTypes.string,
   loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
-  filteredCategories: makeSelectFilteredCategories(),
-  categoriesCount: makeSelectCategoriesCount(),
+  filteredBrands: makeSelectFilteredBrands(),
+  brandsCount: makeSelectBrandsCount(),
   searchFilter: makeSelectSearchFilter(),
   loading: makeSelectLoading(),
 });
@@ -283,9 +286,9 @@ function mapDispatchToProps(dispatch) {
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 // Do not remove your appName hash from here.
-const withSaga = injectSaga({ key: `${CURRENT_APP_NAME}-categories`, saga });
+const withSaga = injectSaga({ key: `${CURRENT_APP_NAME}-brands`, saga });
 // Do not remove your appName hash from here.
-const withReducer = injectReducer({ key: `${CURRENT_APP_NAME}-categories`, reducer });
+const withReducer = injectReducer({ key: `${CURRENT_APP_NAME}-brands`, reducer });
 
 export default compose(
   withRouter,
@@ -293,5 +296,4 @@ export default compose(
   withReducer,
   withConnect,
   injectIntl,
-)(clearDataOnUnmount(withStyles(Categories, styles), 'clearData'));
-
+)(clearDataOnUnmount(withStyles(Brands, styles), 'clearData'));

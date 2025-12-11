@@ -209,3 +209,133 @@ export const deleteCategory = (categoryId) => {
   const url = `${baseUrl}/categories/${categoryId}`;
   return httpRequest(url, getAryaAPICallObject('DELETE'));
 };
+
+// Product Brands v2 API endpoints
+
+/**
+ * Get all product brands (v2 API)
+ * @param {object} params - Query parameters { q, limit, offset, root, entityCodes, entityIds, sortBy, sortOrder, includeChildren, childrenLimit, childrenOffset, ouCode, fetchType }
+ * @returns {Promise} API response with structure { data: [...], pagination: {...}, warnings: [...] }
+ */
+export const getBrands = (params = {}) => {
+  const queryParams = new URLSearchParams();
+  
+  // Search parameter (q) - case-insensitive search by code/name
+  if (params.q) {
+    queryParams.append('q', params.q);
+  }
+  
+  // Pagination
+  if (params.limit !== undefined) {
+    queryParams.append('limit', params.limit);
+  }
+  if (params.offset !== undefined) {
+    queryParams.append('offset', params.offset);
+  }
+  
+  // Filters
+  if (params.root !== undefined) {
+    queryParams.append('root', params.root);
+  }
+  if (params.entityCodes) {
+    queryParams.append('entityCodes', params.entityCodes);
+  }
+  if (params.entityIds) {
+    queryParams.append('entityIds', params.entityIds);
+  }
+  
+  // Sorting
+  if (params.sortBy) {
+    queryParams.append('sortBy', params.sortBy);
+  }
+  if (params.sortOrder) {
+    queryParams.append('sortOrder', params.sortOrder);
+  }
+  
+  // Hierarchy
+  if (params.includeChildren !== undefined) {
+    queryParams.append('includeChildren', params.includeChildren);
+  }
+  if (params.childrenLimit !== undefined) {
+    queryParams.append('childrenLimit', params.childrenLimit);
+  }
+  if (params.childrenOffset !== undefined) {
+    queryParams.append('childrenOffset', params.childrenOffset);
+  }
+  
+  // OU and fetch type
+  if (params.ouCode) {
+    queryParams.append('ouCode', params.ouCode);
+  }
+  if (params.fetchType) {
+    queryParams.append('fetchType', params.fetchType);
+  }
+  
+  // Add time parameter for cache-busting (timestamp in milliseconds)
+  if (!USE_MOCK_API) {
+    queryParams.append('time', Date.now());
+  }
+  
+  const queryString = queryParams.toString();
+  const baseUrl = USE_MOCK_API ? MOCK_API_BASE : endpoints.product_brands_api_endpoint;
+  const url = `${baseUrl}/brands${queryString ? `?${queryString}` : ''}`;
+  return httpRequest(url, getAryaAPICallObject('GET'));
+};
+
+/**
+ * Get single brand by ID (v2 API)
+ * @param {string|number} brandId
+ * @param {object} params - Optional parameters { includeChildren, childrenLimit, childrenOffset }
+ * @returns {Promise}
+ */
+export const getBrandById = (brandId, params = {}) => {
+  const queryParams = new URLSearchParams();
+  if (params.includeChildren !== undefined) {
+    queryParams.append('includeChildren', params.includeChildren);
+  }
+  if (params.childrenLimit !== undefined) {
+    queryParams.append('childrenLimit', params.childrenLimit);
+  }
+  if (params.childrenOffset !== undefined) {
+    queryParams.append('childrenOffset', params.childrenOffset);
+  }
+  
+  const queryString = queryParams.toString();
+  const baseUrl = USE_MOCK_API ? MOCK_API_BASE : endpoints.product_brands_api_endpoint;
+  const url = `${baseUrl}/brands/${brandId}${queryString ? `?${queryString}` : ''}`;
+  return httpRequest(url, getAryaAPICallObject('GET'));
+};
+
+/**
+ * Create new brand (v2 API)
+ * @param {object} brandData - { code, name, parentId, description }
+ * @returns {Promise}
+ */
+export const createBrand = (brandData) => {
+  const baseUrl = USE_MOCK_API ? MOCK_API_BASE : endpoints.product_brands_api_endpoint;
+  const url = `${baseUrl}/brands`;
+  return httpRequest(url, getAryaAPICallObject('POST', brandData));
+};
+
+/**
+ * Update brand (v2 API)
+ * @param {string|number} brandId
+ * @param {object} brandData
+ * @returns {Promise}
+ */
+export const updateBrand = (brandId, brandData) => {
+  const baseUrl = USE_MOCK_API ? MOCK_API_BASE : endpoints.product_brands_api_endpoint;
+  const url = `${baseUrl}/brands/${brandId}`;
+  return httpRequest(url, getAryaAPICallObject('PUT', brandData));
+};
+
+/**
+ * Delete brand (v2 API)
+ * @param {string|number} brandId
+ * @returns {Promise}
+ */
+export const deleteBrand = (brandId) => {
+  const baseUrl = USE_MOCK_API ? MOCK_API_BASE : endpoints.product_brands_api_endpoint;
+  const url = `${baseUrl}/brands/${brandId}`;
+  return httpRequest(url, getAryaAPICallObject('DELETE'));
+};
