@@ -40,7 +40,7 @@ const enviromentEndpoints = {
     gateway_endpoint: `https://${intouchBaseUrl}/vulcan/api/v1/gateway`,
     // Product Categories v2 API endpoint
     // For mock API, use MOCK_API_BASE in api.js when REACT_APP_USE_MOCK_API=true
-    product_categories_api_endpoint: `https://${intouchBaseUrl}/v2/product`,
+    product_categories_api_endpoint: `https://${intouchBaseUrl}/intouch-api/v2/product`,
   },
   // use this for partial urls added after current window.location.origin
   // production mode
@@ -71,7 +71,7 @@ const enviromentEndpoints = {
     // API Gateway endpoints whitelisted via vulcan
     gateway_endpoint: '/vulcan/api/v1/gateway',
     // Product Categories v2 API endpoint (production)
-    product_categories_api_endpoint: '/v2/product',
+    product_categories_api_endpoint: '/intouch-api/v2/product',
   },
 };
 

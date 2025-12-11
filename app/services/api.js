@@ -138,6 +138,11 @@ export const getCategories = (params = {}) => {
     queryParams.append('sortOrder', params.sortOrder);
   }
   
+  // Add time parameter for cache-busting (timestamp in milliseconds)
+  if (!USE_MOCK_API) {
+    queryParams.append('time', Date.now());
+  }
+  
   const queryString = queryParams.toString();
   const baseUrl = USE_MOCK_API ? MOCK_API_BASE : endpoints.product_categories_api_endpoint;
   const url = `${baseUrl}/categories${queryString ? `?${queryString}` : ''}`;
