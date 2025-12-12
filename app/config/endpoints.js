@@ -44,6 +44,9 @@ const enviromentEndpoints = {
     // Product Brands v2 API endpoint
     // For mock API, use MOCK_API_BASE in api.js when REACT_APP_USE_MOCK_API=true
     product_brands_api_endpoint: `https://${intouchBaseUrl}/intouch-api/v2/product`,
+    // Product Products v2 API endpoint
+    // For mock API, use MOCK_API_BASE in api.js when REACT_APP_USE_MOCK_API=true
+    product_products_api_endpoint: `https://${intouchBaseUrl}/intouch-api/v2/product`,
   },
   // use this for partial urls added after current window.location.origin
   // production mode
@@ -77,6 +80,8 @@ const enviromentEndpoints = {
     product_categories_api_endpoint: '/intouch-api/v2/product',
     // Product Brands v2 API endpoint (production)
     product_brands_api_endpoint: '/intouch-api/v2/product',
+    // Product Products v2 API endpoint (production)
+    product_products_api_endpoint: '/intouch-api/v2/product',
   },
 };
 

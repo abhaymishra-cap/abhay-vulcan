@@ -339,3 +339,105 @@ export const deleteBrand = (brandId) => {
   const url = `${baseUrl}/brands/${brandId}`;
   return httpRequest(url, getAryaAPICallObject('DELETE'));
 };
+
+// Product Products v2 API endpoints
+
+/**
+ * Get all products (v2 API)
+ * @param {object} params - Query parameters { q, limit, offset, brandId, categoryId, sortBy, sortOrder, status, etc }
+ * @returns {Promise} API response with structure { data: [...], pagination: {...}, warnings: [...] }
+ */
+export const getProducts = (params = {}) => {
+  const queryParams = new URLSearchParams();
+  
+  // Search parameter (q) - case-insensitive search by name/SKU
+  if (params.q) {
+    queryParams.append('q', params.q);
+  }
+  
+  // Pagination
+  if (params.limit !== undefined) {
+    queryParams.append('limit', params.limit);
+  }
+  if (params.offset !== undefined) {
+    queryParams.append('offset', params.offset);
+  }
+  
+  // Filters
+  if (params.brandId) {
+    queryParams.append('brandId', params.brandId);
+  }
+  if (params.categoryId) {
+    queryParams.append('categoryId', params.categoryId);
+  }
+  if (params.status) {
+    queryParams.append('status', params.status);
+  }
+  
+  // Sorting
+  if (params.sortBy) {
+    queryParams.append('sortBy', params.sortBy);
+  }
+  if (params.sortOrder) {
+    queryParams.append('sortOrder', params.sortOrder);
+  }
+  
+  // Add time parameter for cache-busting (timestamp in milliseconds)
+  if (!USE_MOCK_API) {
+    queryParams.append('time', Date.now());
+  }
+  
+  const queryString = queryParams.toString();
+  const baseUrl = USE_MOCK_API ? MOCK_API_BASE : endpoints.product_products_api_endpoint;
+  const url = `${baseUrl}/attributes${queryString ? `?${queryString}` : ''}`;
+  return httpRequest(url, getAryaAPICallObject('GET'));
+};
+
+/**
+ * Get single product by ID (v2 API)
+ * @param {string|number} productId
+ * @param {object} params - Optional parameters
+ * @returns {Promise}
+ */
+export const getProductById = (productId, params = {}) => {
+  const queryParams = new URLSearchParams();
+  
+  const queryString = queryParams.toString();
+  const baseUrl = USE_MOCK_API ? MOCK_API_BASE : endpoints.product_products_api_endpoint;
+  const url = `${baseUrl}/attributes/${productId}${queryString ? `?${queryString}` : ''}`;
+  return httpRequest(url, getAryaAPICallObject('GET'));
+};
+
+/**
+ * Create new product (v2 API)
+ * @param {object} productData - Product data object
+ * @returns {Promise}
+ */
+export const createProduct = (productData) => {
+  const baseUrl = USE_MOCK_API ? MOCK_API_BASE : endpoints.product_products_api_endpoint;
+  const url = `${baseUrl}/attributes`;
+  return httpRequest(url, getAryaAPICallObject('POST', productData));
+};
+
+/**
+ * Update product (v2 API)
+ * @param {string|number} productId
+ * @param {object} productData
+ * @returns {Promise}
+ */
+export const updateProduct = (productId, productData) => {
+  const baseUrl = USE_MOCK_API ? MOCK_API_BASE : endpoints.product_products_api_endpoint;
+  const url = `${baseUrl}/attributes/${productId}`;
+  return httpRequest(url, getAryaAPICallObject('PUT', productData));
+};
+
+/**
+ * Delete product (v2 API)
+ * @param {string|number} productId
+ * @returns {Promise}
+ */
+export const deleteProduct = (productId) => {
+  const baseUrl = USE_MOCK_API ? MOCK_API_BASE : endpoints.product_products_api_endpoint;
+  const url = `${baseUrl}/attributes/${productId}`;
+  return httpRequest(url, getAryaAPICallObject('DELETE'));
+};

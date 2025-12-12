@@ -203,51 +203,51 @@ function Categories(props) {
             <InventorySidebar history={history} activeRoute={currentRoute} />
           </CapColumn>
           <CapColumn span={20}>
-            <div className="categories-page">
-              <div className="categories-header">
-                <CapHeading type="h1" level={1}>
-                  {formatMessage(messages.header)}
-                </CapHeading>
-                <div className="categories-summary">
-                  {formatMessage(messages.totalCategories)}: {categoriesCount}
-                </div>
-              </div>
-
-              <div className="categories-actions">
-                <div className="search-container">
-                  <CapInput.Search
-                    placeholder={formatMessage(messages.searchPlaceholder)}
-                    value={localSearchValue}
-                    onChange={handleSearchChange}
-                    size="large"
-                    allowClear
-                  />
-                </div>
-                <div className="action-buttons">
-                  <CapButton
-                    type="primary"
-                    isAddBtn
-                    onClick={handleAddCategory}
-                  >
-                    {formatMessage(messages.addNewCategory)}
-                  </CapButton>
-                  <CapButton
-                    type="secondary"
-                    onClick={handleMoreActions}
-                    icon={<CapIcon type="ellipsis" />}
-                  />
-                </div>
-              </div>
-
-              <CapSpin spinning={loading}>
-                <CapTable
-                  columns={columns}
-                  dataSource={filteredCategories}
-                  rowKey="id"
-                  pagination={false}
-                />
-              </CapSpin>
+        <div className="categories-page">
+          <div className="categories-header">
+            <CapHeading type="h1" level={1}>
+              {formatMessage(messages.header)}
+            </CapHeading>
+            <div className="categories-summary">
+              {formatMessage(messages.totalCategories)}: {categoriesCount}
             </div>
+          </div>
+
+          <div className="categories-actions">
+            <div className="search-container">
+              <CapInput.Search
+                placeholder={formatMessage(messages.searchPlaceholder)}
+                value={localSearchValue}
+                onChange={handleSearchChange}
+                size="large"
+                allowClear
+              />
+            </div>
+            <div className="action-buttons">
+              <CapButton
+                type="primary"
+                isAddBtn
+                onClick={handleAddCategory}
+              >
+                {formatMessage(messages.addNewCategory)}
+              </CapButton>
+              <CapButton
+                type="secondary"
+                onClick={handleMoreActions}
+                icon={<CapIcon type="ellipsis" />}
+              />
+            </div>
+          </div>
+
+          <CapSpin spinning={loading}>
+            <CapTable
+              columns={columns}
+              dataSource={filteredCategories}
+              rowKey="id"
+              pagination={false}
+            />
+          </CapSpin>
+        </div>
           </CapColumn>
         </CapRow>
       </PageTemplate>
