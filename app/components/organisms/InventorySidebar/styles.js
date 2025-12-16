@@ -3,12 +3,18 @@ import * as styledVars from '@capillarytech/cap-ui-library/styled/variables';
 
 export default css`
   .inventory-sidebar {
-    height: 100vh;
+    position: fixed;
+    top: 64px; /* Start below the Capillary Technologies navbar */
+    left: 0;
+    width: 280px; /* Fixed width for sidebar (approximately 16.67% of viewport) */
+    height: calc(100vh - 64px); /* Fill remaining viewport height below navbar */
     background-color: ${styledVars.CAP_WHITE || '#ffffff'}; /* White background to match cap-ui-library */
     display: flex;
     flex-direction: column;
     padding: 24px 16px;
     box-sizing: border-box;
+    z-index: 100; /* Ensure sidebar stays above content */
+    overflow: hidden; /* Prevent sidebar from scrolling */
   }
 
   .inventory-sidebar-header {

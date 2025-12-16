@@ -3,6 +3,7 @@ import * as styledVars from '@capillarytech/cap-ui-library/styled/variables';
 
 export default css`
   .brands-page {
+    margin-left: 40px; /* Account for fixed sidebar width */
     padding: 24px;
     min-height: 100vh;
     background-color: ${styledVars.CAP_WHITE || '#ffffff'};
