@@ -1,9 +1,13 @@
-// This file is used to expose the components of the MFE to the host application
-// Contents of this file are used in webpack config's ModuleFederationPlugin.
-//
 module.exports = {
-    // which exposes
-    // ADD MFE COMPONENT YOU WANT TO EXPORT example:
-    // './Home': './app/components/pages/Home', // this will expose Home component
-  };
-  
+  './About': './app/components/pages/About',
+  './App': './app/components/pages/App',
+  './Brands': './app/components/pages/Brands',
+  './Cap': './app/components/pages/Cap',
+  './Categories': './app/components/pages/Categories',
+  './Contact': './app/components/pages/Contact',
+  './Dashboard': './app/components/pages/Dashboard',
+  './Home': './app/components/pages/Home',
+  './Login': './app/components/pages/Login',
+  './Products': './app/components/pages/Products',
+  './RedirectToLoginPage': './app/components/pages/RedirectToLoginPage'
+};

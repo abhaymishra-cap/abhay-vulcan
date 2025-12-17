@@ -10,7 +10,8 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 import { compose } from 'redux';
 import { ConnectedRouter } from 'connected-react-router/immutable';
-import { getHistoryInstance, injectSaga, sagaInjectorTypes, withReloadAndRedirection } from '@capillarytech/vulcan-react-sdk/utils';
+import { injectSaga, sagaInjectorTypes, withReloadAndRedirection } from '@capillarytech/vulcan-react-sdk/utils';
+import history from '../../../utils/history';
 
 import { appName, prefix } from '../../../../app-config';
 
@@ -28,7 +29,7 @@ import RenderRoute from '../../atoms/RenderRoute';
 import { LOGIN_URL } from '../../../config/constants';
 
 export const App = () => {
-    const [history] = React.useState(() => getHistoryInstance());
+    // Using shared hash history for SPA routing
     return (
         <div className={CURRENT_APP_NAME}>
             <ConnectedRouter history={history}>

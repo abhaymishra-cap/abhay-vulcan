@@ -9,11 +9,11 @@
 import '@babel/polyfill';
 import {
   VulcanSDKSetup,
-  getHistoryInstance,
   configureStore,
   setStandaloneModes,
 } from '@capillarytech/vulcan-react-sdk/utils';
 import { publicPath } from './config/path';
+import history from './utils/history';
 
 import React from 'react';
 import { createRoot } from 'react-dom/client'; // REACT-18 Upgrade
@@ -61,8 +61,7 @@ openSansObserver
     console.log(err);
   });
 
-// Create redux store with history
-const history = getHistoryInstance();
+// Use shared hash history for SPA routing without server config
 
 const initialReducer = {
   [`${CURRENT_APP_NAME}-login-reducer`]: loginReducer

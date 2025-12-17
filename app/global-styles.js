@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Roboto', Arial, sans-serif;
   }
 
-  #abhay-test2-container {
+  #abhay-test-container {
     min-height: 100%;
     min-width: 100%;
   }
@@ -28,7 +28,7 @@ const GlobalStyle = createGlobalStyle`
     line-height: 1.5em;
   }
 
-  .abhay-test2-body {
+  .abhay-test-body {
     .ant-popover,
     .ant-select-dropdown,
     .ant-select-dropdown.ant-select-dropdown--single,

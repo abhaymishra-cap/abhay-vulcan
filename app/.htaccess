@@ -38,8 +38,8 @@
   # and we are not opening the root already (otherwise we get a redirect loop)
   RewriteCond %{REQUEST_FILENAME} !\/$
 
-  # Rewrite all requests to the root
-  RewriteRule ^(.*) /
+  # Rewrite all requests to index.html for SPA routing
+  RewriteRule ^(.*) index.html [L]
 
 </ifModule>
 

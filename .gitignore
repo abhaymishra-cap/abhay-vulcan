@@ -24,4 +24,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # Mock API database (will be modified during development)
-mock-api/db.json
+mock-api/db.
+
+build.zip
+/build
+/build 2

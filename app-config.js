@@ -1,8 +1,8 @@
 module.exports = {
-  "appName": "abhay-test2",
+  "appName": "abhay-test",
   "appId": "7fbd28230bda6f83aca688c3",
   "intouchBaseUrl": "nightly.intouch.capillarytech.com",
-  "prefix": "/abhay-test2/ui",
+  "prefix": "/abhay/ui",
   "isHostedOnPlatform": true,
   "appType": "native",
   "bugsnag": {
@@ -17,7 +17,7 @@ module.exports = {
     "localI18n": false,
     "appNames": [],
     "locales": [],
-    "defaultLocale": null
+    "defaultLocale": "en-US"
   },
   "gtm": {
     "useGTM": false,
@@ -25,5 +25,6 @@ module.exports = {
     "projectId": null
   },
   "useNavigationComponent": true,
-  "useTestSetup": false
+  "useTestSetup": false,
+  "useLatestLeftNavigation": false
 };
