@@ -234,11 +234,6 @@ function Brands(props) {
                   >
                     {formatMessage(messages.addNewBrand)}
                   </CapButton>
-                  <CapButton
-                    type="secondary"
-                    onClick={handleMoreActions}
-                    icon={<CapIcon type="ellipsis" />}
-                  />
                 </div>
               </div>
 

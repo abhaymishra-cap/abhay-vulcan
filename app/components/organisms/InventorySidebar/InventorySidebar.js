@@ -2,12 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from 'react-intl';
 import { withStyles } from '@capillarytech/vulcan-react-sdk/utils';
-import { CapIcon } from '@capillarytech/cap-ui-library';
+import { CapIcon, CapMenu, CapHeading } from '@capillarytech/cap-ui-library';
 import messages from './messages';
 import styles from './styles';
 
 function InventorySidebar({ className, history, activeRoute, intl: { formatMessage } }) {
-  const handleNavClick = route => {
+  // Map activeRoute to selectedMenuItem key
+  const routeToKeyMap = {
+    '/products': 'products',
+    '/brands': 'brands',
+    '/categories': 'categories',
+  };
+
+  const selectedMenuItem = routeToKeyMap[activeRoute] || '';
+
+  // Map menu keys to routes
+  const keyToRouteMap = {
+    products: '/products',
+    brands: '/brands',
+    categories: '/categories',
+  };
+
+  // Handle menu item click
+  const handleMenuClick = ({ key }) => {
+    const route = keyToRouteMap[key];
     if (history && route) {
       history.push(route);
     }
@@ -18,62 +36,43 @@ function InventorySidebar({ className, history, activeRoute, intl: { formatMessa
     console.log('Logout clicked');
   };
 
-  const navItems = [
-    {
-      key: 'products',
-      route: '/products',
-      icon: 'box', // Using box icon for Products
-      label: formatMessage(messages.products),
-    },
-    {
-      key: 'brands',
-      route: '/brands',
-      icon: 'tag', // Using tag icon for Brands
-      label: formatMessage(messages.brands),
-    },
-    {
-      key: 'categories',
-      route: '/categories',
-      icon: 'appstore', // Using appstore icon for Categories (stacked boxes)
-      label: formatMessage(messages.categories),
-    },
-  ];
-
   return (
     <div className={className}>
       <div className="inventory-sidebar">
         <div className="inventory-sidebar-header">
-          <div className="inventory-sidebar-branding">
+          <CapHeading type="h2" className="inventory-sidebar-branding">
             <span className="inventory-sidebar-branding-inventory">Inventory</span>
             <span className="inventory-sidebar-branding-os">OS</span>
-          </div>
+          </CapHeading>
         </div>
 
-        <nav className="inventory-sidebar-nav">
-          {navItems.map(item => (
-            <div
-              key={item.key}
-              className={`inventory-sidebar-nav-item ${activeRoute === item.route ? 'active' : ''}`}
-              onClick={() => handleNavClick(item.route)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={e => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleNavClick(item.route);
-                }
-              }}
-            >
-              <CapIcon type={item.icon} className="inventory-sidebar-nav-item-icon" />
-              <span>{item.label}</span>
-            </div>
-          ))}
-        </nav>
+        <div className="inventory-sidebar-nav">
+          <CapMenu
+            selectedKeys={selectedMenuItem ? [selectedMenuItem] : []}
+            onClick={handleMenuClick}
+            mode="vertical"
+            className="inventory-sidebar-menu"
+          >
+            <CapMenu.Item key="products" icon={<CapIcon type="box" />}>
+              {formatMessage(messages.products)}
+            </CapMenu.Item>
+            <CapMenu.Item key="brands" icon={<CapIcon type="tag" />}>
+              {formatMessage(messages.brands)}
+            </CapMenu.Item>
+            <CapMenu.Item key="categories" icon={<CapIcon type="appstore" />}>
+              {formatMessage(messages.categories)}
+            </CapMenu.Item>
+          </CapMenu>
+        </div>
 
         <div className="inventory-sidebar-user">
           <div className="inventory-sidebar-user-info">
-            <div className="inventory-sidebar-user-name">{formatMessage(messages.adminUser)}</div>
-            <div className="inventory-sidebar-user-email">{formatMessage(messages.adminEmail)}</div>
+            <CapHeading type="h5" className="inventory-sidebar-user-name">
+              {formatMessage(messages.adminUser)}
+            </CapHeading>
+            <CapHeading type="h6" className="inventory-sidebar-user-email">
+              {formatMessage(messages.adminEmail)}
+            </CapHeading>
           </div>
           <div
             className="inventory-sidebar-user-logout"

@@ -39,33 +39,44 @@ export default css`
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 8px;
   }
 
-  .inventory-sidebar-nav-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
+  /* CapMenu component styles */
+  .inventory-sidebar-menu {
+    background: transparent;
+    border: none;
+  }
+
+  .inventory-sidebar-menu .ant-menu-item {
+    margin: 0 0 8px 0;
+    padding: 12px 16px !important;
     border-radius: 8px;
-    cursor: pointer;
+    height: auto;
+    line-height: 1.5;
+    color: ${styledVars.CAP_G04 || '#666666'};
+    font-size: ${styledVars.CAP_FONT_SIZE_14 || '1rem'};
     transition: background-color 0.2s;
-    color: ${styledVars.CAP_G04 || '#666666'}; /* Dark grey text for light background */
-    font-size: ${styledVars.CAP_FONT_SIZE_14 || '1rem'}; /* variable is absent - using rem with base 14 */
+    text-align: left;
   }
 
-  .inventory-sidebar-nav-item:hover {
-    background-color: ${styledVars.CAP_G06 || '#f7fafc'}; /* Light grey hover for light background */
+  .inventory-sidebar-menu .ant-menu-item:hover {
+    background-color: ${styledVars.CAP_G06 || '#f7fafc'};
+    color: ${styledVars.CAP_G04 || '#666666'};
   }
 
-  .inventory-sidebar-nav-item.active {
-    background-color: ${styledVars.CAP_G06 || '#f7fafc'}; /* White/off-white background for active state */
+  .inventory-sidebar-menu .ant-menu-item-selected {
+    background-color: #fafafa !important; /* Very subtle off-white background for active state */
     font-weight: 600;
-    color: ${styledVars.CAP_G01 || '#2d3748'}; /* Dark text on active */
+    color: ${styledVars.CAP_G01 || '#2d3748'} !important;
   }
 
-  .inventory-sidebar-nav-item-icon {
-    font-size: ${styledVars.CAP_FONT_SIZE_18 || '1.29rem'}; /* variable is absent - using rem with base 14 */
+  .inventory-sidebar-menu .ant-menu-item-selected::after {
+    display: none; /* Remove default Ant Design selected indicator */
+  }
+
+  .inventory-sidebar-menu .ant-menu-item-icon {
+    font-size: ${styledVars.CAP_FONT_SIZE_18 || '1.29rem'};
+    margin-right: 12px;
   }
 
   .inventory-sidebar-user {

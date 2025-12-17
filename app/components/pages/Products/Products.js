@@ -375,11 +375,6 @@ function Products(props) {
                   >
                     {formatMessage(messages.addNewProduct)}
                   </CapButton>
-                  <CapButton
-                    type="secondary"
-                    onClick={handleMoreActions}
-                    icon={<CapIcon type="ellipsis" />}
-                  />
                 </div>
               </div>
 
