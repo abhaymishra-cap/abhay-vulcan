@@ -44,4 +44,52 @@ export default defineMessages({
     id: `${scope}.noParent`,
     defaultMessage: '-',
   },
+  addBrandModalTitle: {
+    id: `${scope}.addBrandModalTitle`,
+    defaultMessage: 'Add New Brand',
+  },
+  brandCode: {
+    id: `${scope}.brandCode`,
+    defaultMessage: 'Brand Code',
+  },
+  brandCodePlaceholder: {
+    id: `${scope}.brandCodePlaceholder`,
+    defaultMessage: 'Enter brand code',
+  },
+  brandNamePlaceholder: {
+    id: `${scope}.brandNamePlaceholder`,
+    defaultMessage: 'Enter brand name',
+  },
+  description: {
+    id: `${scope}.description`,
+    defaultMessage: 'Description',
+  },
+  descriptionPlaceholder: {
+    id: `${scope}.descriptionPlaceholder`,
+    defaultMessage: 'Enter brand description (optional)',
+  },
+  submit: {
+    id: `${scope}.submit`,
+    defaultMessage: 'Submit',
+  },
+  cancel: {
+    id: `${scope}.cancel`,
+    defaultMessage: 'Cancel',
+  },
+  codeRequired: {
+    id: `${scope}.codeRequired`,
+    defaultMessage: 'Brand code is required',
+  },
+  nameRequired: {
+    id: `${scope}.nameRequired`,
+    defaultMessage: 'Brand name is required',
+  },
+  createSuccess: {
+    id: `${scope}.createSuccess`,
+    defaultMessage: 'Brand created successfully',
+  },
+  createError: {
+    id: `${scope}.createError`,
+    defaultMessage: 'Failed to create brand',
+  },
 });

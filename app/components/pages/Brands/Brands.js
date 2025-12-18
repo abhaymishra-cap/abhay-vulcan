@@ -8,6 +8,7 @@ import { injectIntl, intlShape } from 'react-intl';
 import { injectSaga, injectReducer, clearDataOnUnmount, withStyles, getHostApplicationContext } from '@capillarytech/vulcan-react-sdk/utils';
 import PageTemplate from '../../templates/PageTemplate';
 import InventorySidebar from '../../organisms/InventorySidebar';
+import AddBrandModal from './AddBrandModal';
 import * as actions from './actions';
 import saga from './saga';
 import reducer from './reducer';
@@ -52,8 +53,10 @@ function Brands(props) {
 
   // Local state for search input (for immediate UI update)
   const [localSearchValue, setLocalSearchValue] = useState(searchFilter || '');
+  const [showAddBrandModal, setShowAddBrandModal] = useState(false);
   const debounceTimerRef = useRef(null);
   const isInitialMount = useRef(true);
+  const createBrandInProgressRef = useRef(false);
 
   // Initial load - fetch all brands (only on mount)
   useEffect(() => {
@@ -111,6 +114,18 @@ function Brands(props) {
     }
   }, [searchFilter]);
 
+  // Handle brand creation completion - close modal after successful creation
+  // The saga will refresh the brands list automatically
+  useEffect(() => {
+    if (createBrandInProgressRef.current && !loading && showAddBrandModal) {
+      // Create operation completed (loading went from true to false)
+      // Close modal - if there was an error, it's stored in Redux state
+      // and can be displayed if needed
+      setShowAddBrandModal(false);
+      createBrandInProgressRef.current = false;
+    }
+  }, [loading, showAddBrandModal]);
+
   const handleSearchChange = e => {
     const value = e.target.value;
     setLocalSearchValue(value); // Update local state immediately for responsive UI
@@ -118,8 +133,16 @@ function Brands(props) {
   };
 
   const handleAddBrand = () => {
-    // TODO: Implement add brand functionality
-    console.log('Add new brand clicked');
+    setShowAddBrandModal(true);
+  };
+
+  const handleModalCancel = () => {
+    setShowAddBrandModal(false);
+  };
+
+  const handleModalSubmit = (brandData) => {
+    createBrandInProgressRef.current = true;
+    actions.createBrand(brandData);
   };
 
   const handleMoreActions = () => {
@@ -249,6 +272,12 @@ function Brands(props) {
           </CapColumn>
         </CapRow>
       </PageTemplate>
+      <AddBrandModal
+        visible={showAddBrandModal}
+        onCancel={handleModalCancel}
+        onSubmit={handleModalSubmit}
+        loading={loading}
+      />
     </div>
   );
 }

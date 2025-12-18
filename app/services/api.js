@@ -308,13 +308,15 @@ export const getBrandById = (brandId, params = {}) => {
 
 /**
  * Create new brand (v2 API)
- * @param {object} brandData - { code, name, parentId, description }
+ * @param {object|array} brandData - Single brand object { code, name, parentId, description } or array of brands
  * @returns {Promise}
  */
 export const createBrand = (brandData) => {
   const baseUrl = USE_MOCK_API ? MOCK_API_BASE : endpoints.product_brands_api_endpoint;
   const url = `${baseUrl}/brands`;
-  return httpRequest(url, getAryaAPICallObject('POST', brandData));
+  // API expects an array format, so wrap single object in array if needed
+  const payload = Array.isArray(brandData) ? brandData : [brandData];
+  return httpRequest(url, getAryaAPICallObject('POST', payload));
 };
 
 /**
