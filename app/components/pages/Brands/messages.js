@@ -92,4 +92,16 @@ export default defineMessages({
     id: `${scope}.createError`,
     defaultMessage: 'Failed to create brand',
   },
+  previousPage: {
+    id: `${scope}.previousPage`,
+    defaultMessage: 'Previous',
+  },
+  nextPage: {
+    id: `${scope}.nextPage`,
+    defaultMessage: 'Next',
+  },
+  pageInfo: {
+    id: `${scope}.pageInfo`,
+    defaultMessage: 'Showing {start}-{end} of {total}',
+  },
 });

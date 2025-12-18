@@ -18,6 +18,7 @@ import {
   makeSelectBrandsCount,
   makeSelectSearchFilter,
   makeSelectLoading,
+  makeSelectPagination,
 } from './selectors';
 import messages from './messages';
 import {
@@ -43,6 +44,7 @@ function Brands(props) {
     brandsCount,
     searchFilter,
     loading,
+    pagination,
   } = props;
 
   const currentRoute = history?.location?.pathname || '/brands';
@@ -149,6 +151,54 @@ function Brands(props) {
     // TODO: Implement more actions menu
     console.log('More actions clicked');
   };
+
+  // Pagination handlers
+  const handlePreviousPage = () => {
+    const currentOffset = pagination?.offset || 0;
+    const limit = pagination?.limit || 10;
+    const newOffset = Math.max(0, currentOffset - limit);
+    
+    const searchParams = {
+      limit,
+      offset: newOffset,
+    };
+    
+    if (localSearchValue && localSearchValue.trim()) {
+      searchParams.q = localSearchValue.trim();
+    }
+    
+    actions.fetchBrands(searchParams);
+  };
+
+  const handleNextPage = () => {
+    const currentOffset = pagination?.offset || 0;
+    const limit = pagination?.limit || 10;
+    const total = pagination?.total || 0;
+    const newOffset = currentOffset + limit;
+    
+    if (newOffset < total) {
+      const searchParams = {
+        limit,
+        offset: newOffset,
+      };
+      
+      if (localSearchValue && localSearchValue.trim()) {
+        searchParams.q = localSearchValue.trim();
+      }
+      
+      actions.fetchBrands(searchParams);
+    }
+  };
+
+  // Calculate pagination display values
+  const limit = pagination?.limit || 10;
+  const offset = pagination?.offset || 0;
+  const total = pagination?.total || 0;
+  const start = total > 0 ? offset + 1 : 0;
+  const end = Math.min(offset + limit, total);
+  const isPreviousDisabled = offset === 0;
+  const isNextDisabled = offset + limit >= total;
+  const showPagination = total > limit;
 
   const getInitials = name => {
     if (!name) return '';
@@ -268,6 +318,37 @@ function Brands(props) {
                   pagination={false}
                 />
               </CapSpin>
+              {showPagination && (
+                <CapRow justify="space-between" align="middle" style={{ marginTop: 16 }}>
+                  <CapColumn>
+                    <span>
+                      {formatMessage(messages.pageInfo, {
+                        start,
+                        end,
+                        total,
+                      })}
+                    </span>
+                  </CapColumn>
+                  <CapColumn>
+                    <CapButton
+                      disabled={isPreviousDisabled}
+                      onClick={handlePreviousPage}
+                      icon={<CapIcon type="arrow-left" />}
+                      style={{ marginRight: 8, width: 100 }}
+                    >
+                      {formatMessage(messages.previousPage)}
+                    </CapButton>
+                    <CapButton
+                      disabled={isNextDisabled}
+                      onClick={handleNextPage}
+                      icon={<CapIcon type="arrow-right" />}
+                      style={{ width: 100 }}
+                    >
+                      {formatMessage(messages.nextPage)}
+                    </CapButton>
+                  </CapColumn>
+                </CapRow>
+              )}
             </div>
           </CapColumn>
         </CapRow>
@@ -292,6 +373,7 @@ Brands.propTypes = {
   brandsCount: PropTypes.number,
   searchFilter: PropTypes.string,
   loading: PropTypes.bool,
+  pagination: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -299,6 +381,7 @@ const mapStateToProps = createStructuredSelector({
   brandsCount: makeSelectBrandsCount(),
   searchFilter: makeSelectSearchFilter(),
   loading: makeSelectLoading(),
+  pagination: makeSelectPagination(),
 });
 
 function mapDispatchToProps(dispatch) {

@@ -81,6 +81,11 @@ const makeSelectLoading = () =>
     substate.get('loading', false),
   );
 
+const makeSelectPagination = () =>
+  createSelector(selectProductsDomain, (substate = fromJS({})) =>
+    substate.get('pagination', fromJS({})).toJS(),
+  );
+
 export {
   selectProductsDomain,
   makeSelectProducts,
@@ -94,4 +99,5 @@ export {
   makeSelectBrandsForFilter,
   makeSelectCategoriesForFilter,
   makeSelectLoading,
+  makeSelectPagination,
 };
